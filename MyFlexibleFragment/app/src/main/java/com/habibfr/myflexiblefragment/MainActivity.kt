@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
 
         val fragment = fragmentManager.findFragmentByTag(HomeFragment::class.java.simpleName)
 
-        if(fragment !is HomeFragment){
+        if (fragment !is HomeFragment) {
             Log.d("My FlexibleFragment", "Fragment name : " + HomeFragment::class.java.simpleName)
 
             fragmentManager
