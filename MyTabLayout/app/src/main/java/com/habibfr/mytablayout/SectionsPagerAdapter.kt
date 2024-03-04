@@ -8,6 +8,8 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 
 class SectionsPagerAdapter(activity: AppCompatActivity) : FragmentStateAdapter(activity) {
 
+    var appName: String = ""
+
     //    override fun createFragment(position: Int): Fragment {
 //        var fragment: Fragment? = null
 //        when(position){
@@ -32,6 +34,7 @@ class SectionsPagerAdapter(activity: AppCompatActivity) : FragmentStateAdapter(a
 
         fragment.arguments = Bundle().apply {
             putInt(HomeFragment.ARG_SECTION_NUMBER, position + 1)
+            putString(HomeFragment.ARG_NAME, appName)
         }
 
         return fragment

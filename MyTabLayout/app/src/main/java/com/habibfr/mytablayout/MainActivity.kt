@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val sectionsPagerAdapter = SectionsPagerAdapter(this)
+        sectionsPagerAdapter.appName = resources.getString(R.string.app_name)
         val viewPager: ViewPager2 = findViewById(R.id.view_pager)
 
         viewPager.adapter = sectionsPagerAdapter
