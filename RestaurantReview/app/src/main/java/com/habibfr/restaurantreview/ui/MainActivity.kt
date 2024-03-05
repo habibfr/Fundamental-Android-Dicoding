@@ -1,15 +1,18 @@
 package com.habibfr.restaurantreview.ui
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.bumptech.glide.Glide
 import com.habibfr.restaurantreview.R
 import com.habibfr.restaurantreview.data.response.CustomerReviewsItem
+import com.habibfr.restaurantreview.data.response.PostReviewResponse
 import com.habibfr.restaurantreview.data.response.Restaurant
 import com.habibfr.restaurantreview.data.response.RestaurantResponse
 import com.habibfr.restaurantreview.data.retrofit.ApiConfig
@@ -42,6 +45,41 @@ class MainActivity : AppCompatActivity() {
         binding.rvReview.addItemDecoration(itemDecoration)
 
         findRestaurant()
+
+        binding.btnSend.setOnClickListener { view ->
+            postReview(binding.edReview.text.toString().trim())
+
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+        }
+    }
+
+    private fun postReview(review: String) {
+        showLoading(true)
+
+        val client =
+            ApiConfig.getApiService().postReview(RESTAURANT_ID, "Habib Ganteng dan Intelek", review)
+        client.enqueue(object : Callback<PostReviewResponse> {
+            override fun onResponse(
+                call: Call<PostReviewResponse>,
+                response: Response<PostReviewResponse>
+            ) {
+                showLoading(false)
+
+                val responseBody = response.body()
+                if (response.isSuccessful && responseBody != null) {
+                    setReviewData(responseBody.customerReviews)
+                } else {
+                    Log.e(TAG, "onFailure : ${response.message()}")
+                }
+            }
+
+            override fun onFailure(call: Call<PostReviewResponse>, t: Throwable) {
+                showLoading(true)
+                Log.e(TAG, "onFailure : ${t.message}")
+            }
+
+        })
     }
 
     private fun findRestaurant() {
@@ -66,6 +104,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<RestaurantResponse>, t: Throwable) {
+                showLoading(true)
                 Log.e(TAG, "onFailure : ${t.message}")
             }
 
