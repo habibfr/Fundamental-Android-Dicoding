@@ -29,16 +29,19 @@ class MainActivity : AppCompatActivity() {
             val heigth = binding.edtHeight.text.toString()
             val length = binding.edtLength.text.toString()
 
-            when{
-                width.isEmpty() ->{
+            when {
+                width.isEmpty() -> {
                     binding.edtWidth.error = "Masih Kosong"
                 }
-                heigth.isEmpty() ->{
+
+                heigth.isEmpty() -> {
                     binding.edtHeight.error = "Masih Kosong"
                 }
-                length.isEmpty() ->{
+
+                length.isEmpty() -> {
                     binding.edtLength.error = "Masih Kosong"
                 }
+
                 else -> {
                     viewModel.calculate(width, heigth, length)
                     displayResult()
@@ -52,10 +55,10 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-class MainViewModel : ViewModel(){
+class MainViewModel : ViewModel() {
     var result = 0
 
-    fun calculate(width: String, heigth:String, length: String){
+    fun calculate(width: String, heigth: String, length: String) {
         result = width.toInt() * heigth.toInt() * length.toInt()
     }
 }
