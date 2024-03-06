@@ -2,6 +2,7 @@ package com.habibfr.restaurantreview.util
 
 open class Event<out T>(private val content: T) {
 
+    @Suppress("MemberVisibilityCanBePrivate")
     var hasBeenHandled = false
         private set
 
