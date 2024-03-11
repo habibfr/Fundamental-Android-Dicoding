@@ -18,7 +18,14 @@ class HomeViewModel : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
-    companion object{
+    private val _selectedUser = MutableLiveData<String>()
+    val selectedUser: LiveData<String> get() = _selectedUser
+
+    fun selectUser(username: String) {
+        _selectedUser.value = username
+    }
+
+    companion object {
         private const val TAG = "HomeFragment"
     }
 
@@ -26,17 +33,14 @@ class HomeViewModel : ViewModel() {
         findUsers()
     }
 
-
     fun findUsers(username: String = "habibfr") {
         _isLoading.value = true
         val client = ApiConfig.getApiService().getUsers(
-            username,
-            "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"
+            username
         )
         client.enqueue(object : Callback<GithubResponse> {
             override fun onResponse(
-                call: Call<GithubResponse>,
-                response: Response<GithubResponse>
+                call: Call<GithubResponse>, response: Response<GithubResponse>
             ) {
                 _isLoading.value = false
                 if (response.isSuccessful) {

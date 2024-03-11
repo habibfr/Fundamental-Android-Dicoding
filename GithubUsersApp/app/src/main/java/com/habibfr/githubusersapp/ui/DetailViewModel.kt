@@ -4,9 +4,8 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.habibfr.githubusersapp.data.response.DetailUser
-import com.habibfr.githubusersapp.data.response.UserFollowerItem
-import com.habibfr.githubusersapp.data.response.Users
 import com.habibfr.githubusersapp.data.retrofit.ApiConfig
 import retrofit2.Call
 import retrofit2.Callback
@@ -19,15 +18,19 @@ class DetailViewModel : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
+    var isDetailLoaded: Boolean = false
+        private set
+    var currentUsername: String? = null
+
     companion object {
         private const val TAG = "DetailFragment"
     }
 
+
     fun detailUser(username: String) {
         _isLoading.value = true
         val client = ApiConfig.getApiService().getDetailUser(
-            username,
-            "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"
+            username
         )
         client.enqueue(object : Callback<DetailUser> {
             override fun onResponse(call: Call<DetailUser>, response: Response<DetailUser>) {
@@ -36,6 +39,7 @@ class DetailViewModel : ViewModel() {
                     val responseBody = response.body()
                     if (responseBody != null) {
                         _detailUser.value = responseBody
+                        isDetailLoaded = true
                     }
                 } else {
                     Log.e(TAG, "onFailure Res: ${response.message()}")
@@ -47,6 +51,7 @@ class DetailViewModel : ViewModel() {
                 Log.e(TAG, "onFailure GET: ${t.message}")
             }
         })
-    }
 
+        currentUsername = username
+    }
 }

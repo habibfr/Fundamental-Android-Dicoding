@@ -1,56 +1,57 @@
 package com.habibfr.githubusersapp.ui
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
-import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.habibfr.githubusersapp.R
 import com.habibfr.githubusersapp.data.response.UserFollowingItem
-import com.habibfr.githubusersapp.data.retrofit.ApiConfig
-import retrofit2.*
+import com.habibfr.githubusersapp.databinding.FragmentFollowingBinding
 
 
 class FollowingFragment : Fragment() {
-    private lateinit var rvFollowing: RecyclerView
-    private lateinit var progressBar: ProgressBar
-    private lateinit var sharedViewModel: SharedViewModel
-    private lateinit var tv_following_kosong: TextView
-
+    private var _binding: FragmentFollowingBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_following, container, false)
+    ): View {
+        _binding = FragmentFollowingBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        rvFollowing = view.findViewById(R.id.rvFollowing)
-        progressBar = view.findViewById(R.id.progressBar)
-        tv_following_kosong = view.findViewById(R.id.tv_following_kosong)
-
         val layoutManager = LinearLayoutManager(activity)
-        rvFollowing.layoutManager = layoutManager
+        binding.rvFollowing.layoutManager = layoutManager
 
         val itemDecoration = DividerItemDecoration(activity, layoutManager.orientation)
-        rvFollowing.addItemDecoration(itemDecoration)
+        binding.rvFollowing.addItemDecoration(itemDecoration)
+        binding.rvFollowing.setHasFixedSize(true)
 
-        sharedViewModel = ViewModelProvider(requireActivity())[SharedViewModel::class.java]
+        val homeViewModel = ViewModelProvider(requireActivity())[HomeViewModel::class.java]
         val followingViewModel =
             ViewModelProvider(requireActivity())[FollowingViewModel::class.java]
 
-        followingViewModel.follower.observe(viewLifecycleOwner) { following ->
+//        followingViewModel.following.observe(viewLifecycleOwner) { following ->
+//            setFollowing(following)
+//        }
+
+        val user = homeViewModel.selectedUser.value
+        followingViewModel.following.observe(viewLifecycleOwner) { following ->
+            if (following != null) {
+                showLoading(false)
+            } else {
+                showLoading(true)
+                user?.let {
+                    followingViewModel.findFollowing(it)
+                }
+            }
             setFollowing(following)
         }
 
@@ -58,54 +59,37 @@ class FollowingFragment : Fragment() {
             showLoading(it)
         }
 
-
-//        findFollowing()
-
-        sharedViewModel.selectedItem.observe(viewLifecycleOwner) { item ->
-            followingViewModel.findFollowing(item)
+        homeViewModel.selectedUser.observe(viewLifecycleOwner) { username ->
+            if (!followingViewModel.isFollowingLoaded || followingViewModel.currentUsername != username) {
+                followingViewModel.findFollowing(username)
+                followingViewModel.currentUsername = username
+            }
         }
     }
 
-    //    private fun findFollowing(username: String = "habibfr") {
-//        showLoading(true)
-//        val client = ApiConfig.getApiService().getUserFollowing(
-//            username,
-//            "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"
-//        )
-//
-//        client.enqueue(object : Callback<List<UserFollowingItem>> {
-//            override fun onResponse(call: Call<List<UserFollowingItem>>, response: Response<List<UserFollowingItem>>) {
-//                if (response.isSuccessful) {
-//                    showLoading(false)
-//                    val userFollowingItems = response.body()
-//                    setFollowing(userFollowingItems)
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<List<UserFollowingItem>>, t: Throwable) {
-//                showLoading(false)
-//                Log.e("ERROR GET FOLLOWING", "onFailure: ${t.message}")
-//            }
-//        })
-//    }
     private fun setFollowing(userFollowing: List<UserFollowingItem?>?) {
 
         if (userFollowing?.isEmpty() == true) {
-            tv_following_kosong.visibility = View.VISIBLE
+            binding.tvFollowingKosong.visibility = View.VISIBLE
         } else {
-            tv_following_kosong.visibility = View.GONE
+            binding.tvFollowingKosong.visibility = View.GONE
         }
 
         val adapter = FollowingAdapter()
         adapter.submitList(userFollowing)
-        rvFollowing.adapter = adapter
+        binding.rvFollowing.adapter = adapter
     }
 
     private fun showLoading(isLoading: Boolean) {
         if (isLoading) {
-            progressBar.visibility = View.VISIBLE
+            binding.progressBarFollowing.visibility = View.VISIBLE
         } else {
-            progressBar.visibility = View.GONE
+            binding.progressBarFollowing.visibility = View.GONE
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

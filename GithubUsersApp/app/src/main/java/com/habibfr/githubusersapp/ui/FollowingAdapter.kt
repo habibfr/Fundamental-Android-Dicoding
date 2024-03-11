@@ -9,16 +9,19 @@ import com.bumptech.glide.Glide
 import com.habibfr.githubusersapp.data.response.UserFollowingItem
 import com.habibfr.githubusersapp.databinding.ItemFollowingBinding
 
-class FollowingAdapter :  ListAdapter<UserFollowingItem, FollowingAdapter.FollowingViewHolder>(DIFF_CALLBACK) {
-    class FollowingViewHolder(val binding: ItemFollowingBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(following: UserFollowingItem){
+class FollowingAdapter :
+    ListAdapter<UserFollowingItem, FollowingAdapter.FollowingViewHolder>(DIFF_CALLBACK) {
+    class FollowingViewHolder(val binding: ItemFollowingBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(following: UserFollowingItem) {
             Glide.with(itemView.context).load(following.avatarUrl).into(binding.imgAvatarFollowing)
             binding.txtUsernameFollowing.text = following.login
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FollowingViewHolder {
-        val binding = ItemFollowingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            ItemFollowingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return FollowingViewHolder(binding)
     }
 

@@ -15,7 +15,11 @@ class FollowerViewModel : ViewModel() {
     val follower: LiveData<List<UserFollowerItem?>?> = _follower
 
     private val _isLoading = MutableLiveData<Boolean>()
-    val isLoading: LiveData<Boolean> = _isLoading
+    val isLoadingFollower: LiveData<Boolean> = _isLoading
+
+    var isFollowerLoaded: Boolean = false
+        private set
+    var currentUsername: String? = null
 
     companion object {
         private const val TAG = "FollowerFragment"
@@ -24,8 +28,7 @@ class FollowerViewModel : ViewModel() {
     fun findFollower(username: String) {
         _isLoading.value = true
         val client = ApiConfig.getApiService().getUserFollower(
-            username,
-            "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"
+            username
         )
         client.enqueue(object : Callback<List<UserFollowerItem>> {
             override fun onResponse(
@@ -36,16 +39,18 @@ class FollowerViewModel : ViewModel() {
                     val responseBody = response.body()
                     if (responseBody != null) {
                         _follower.value = responseBody
+                        isFollowerLoaded = true
                     }
                 } else {
-                    Log.e(TAG, "onFailure follower response : ${response.message()}")
+                    Log.e(TAG, "onFailure res : ${response.message()}")
                 }
             }
 
             override fun onFailure(call: Call<List<UserFollowerItem>>, t: Throwable) {
-                _isLoading.value = true
+                _isLoading.value = false
                 Log.e(TAG, "onFailure get follower: ${t.message}")
             }
         })
+        currentUsername = username
     }
 }

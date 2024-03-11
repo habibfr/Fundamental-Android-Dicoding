@@ -9,11 +9,11 @@ import com.bumptech.glide.Glide
 import com.habibfr.githubusersapp.data.response.Users
 import com.habibfr.githubusersapp.databinding.ItemUserBinding
 
-class UserAdapter : ListAdapter<Users, UserAdapter.MyViewHolder>(DIFF_CALLBACK){
+class UserAdapter : ListAdapter<Users, UserAdapter.MyViewHolder>(DIFF_CALLBACK) {
     private lateinit var onItemClickCallback: OnItemClickCallback
 
-    class MyViewHolder(val binding: ItemUserBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(users: Users){
+    class MyViewHolder(val binding: ItemUserBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(users: Users) {
             Glide.with(itemView.context).load(users.avatarUrl).into(binding.imgAvatar)
             binding.txtUsername.text = users.login
         }
@@ -44,6 +44,7 @@ class UserAdapter : ListAdapter<Users, UserAdapter.MyViewHolder>(DIFF_CALLBACK){
             override fun areItemsTheSame(oldItem: Users, newItem: Users): Boolean {
                 return oldItem == newItem
             }
+
             override fun areContentsTheSame(oldItem: Users, newItem: Users): Boolean {
                 return oldItem == newItem
             }
