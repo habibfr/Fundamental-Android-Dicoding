@@ -5,13 +5,13 @@ import com.google.gson.annotations.SerializedName
 data class GithubResponse(
 
     @field:SerializedName("total_count")
-    val totalCount: Int? = null,
+    val totalCount: Int,
 
     @field:SerializedName("incomplete_results")
-    val incompleteResults: Boolean? = null,
+    val incompleteResults: Boolean,
 
     @field:SerializedName("items")
-    val items: List<Users?>? = null
+    val items: List<Users>
 )
 
 data class Users(
@@ -29,7 +29,7 @@ data class Users(
     val starredUrl: String? = null,
 
     @field:SerializedName("login")
-    val login: String? = null,
+    val login: String,
 
     @field:SerializedName("followers_url")
     val followersUrl: String? = null,
@@ -50,7 +50,7 @@ data class Users(
     val receivedEventsUrl: String? = null,
 
     @field:SerializedName("avatar_url")
-    val avatarUrl: String? = null,
+    val avatarUrl: String,
 
     @field:SerializedName("events_url")
     val eventsUrl: String? = null,

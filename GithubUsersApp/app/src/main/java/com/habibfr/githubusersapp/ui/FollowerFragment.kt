@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.habibfr.githubusersapp.data.local.entity.FavoriteUser
 import com.habibfr.githubusersapp.data.response.UserFollowerItem
 import com.habibfr.githubusersapp.databinding.FragmentFollowerBinding
 
@@ -31,6 +32,7 @@ class FollowerFragment : Fragment() {
         val itemDecoration = DividerItemDecoration(activity, layoutManager.orientation)
         binding.rvFollower.addItemDecoration(itemDecoration)
         binding.rvFollower.setHasFixedSize(true);
+
         val homeViewModel = ViewModelProvider(requireActivity())[HomeViewModel::class.java]
         val followerViewModel = ViewModelProvider(requireActivity())[FollowerViewModel::class.java]
 
@@ -60,7 +62,7 @@ class FollowerFragment : Fragment() {
     }
 
     private fun setFollower(userFollower: List<UserFollowerItem?>?) {
-        val adapter = FollowerAdapter()
+        val adapterFollower = FollowerAdapter()
 
         if (userFollower?.isEmpty() == true) {
             binding.tvFollowerKosong.visibility = View.VISIBLE
@@ -68,8 +70,14 @@ class FollowerFragment : Fragment() {
             binding.tvFollowerKosong.visibility = View.GONE
         }
 
-        adapter.submitList(userFollower)
-        binding.rvFollower.adapter = adapter
+
+        adapterFollower.submitList(userFollower)
+        binding.rvFollower.apply {
+            layoutManager = LinearLayoutManager(activity)
+
+            setHasFixedSize(true)
+            adapter = adapterFollower
+        }
     }
 
     private fun showLoading(isLoading: Boolean) {

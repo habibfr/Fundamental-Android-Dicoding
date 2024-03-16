@@ -4,7 +4,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorSecondary">@color/colorSecondary</item>
         <item name="colorTertiary">@color/colorAccent</item>
-        <item name="android:colorBackground">@color/colorBackground</item>
+        <item name="android:colorBackground">@color/colorPrimary</item>
     </style>
 
     <style name="Theme.GithubUsersApp" parent="Base.Theme.GithubUsersApp">
@@ -12,7 +12,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorSecondary">@color/colorSecondary</item>
         <item name="colorTertiary">@color/colorAccent</item>
-        <item name="android:colorBackground">@color/colorBackground</item>
+        <item name="android:colorBackground">#9A5862</item>
     </style>
 
     <style name="CustomTabLayout" parent="Widget.MaterialComponents.TabLayout">

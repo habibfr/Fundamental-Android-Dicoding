@@ -1,21 +1,24 @@
 package com.habibfr.githubusersapp.ui
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.habibfr.githubusersapp.data.response.Users
+import com.habibfr.githubusersapp.R
+import com.habibfr.githubusersapp.data.local.entity.FavoriteUser
 import com.habibfr.githubusersapp.databinding.ItemUserBinding
 
-class UserAdapter : ListAdapter<Users, UserAdapter.MyViewHolder>(DIFF_CALLBACK) {
+class UserAdapter(private val onFavUserClick: (FavoriteUser) -> Unit) : ListAdapter<FavoriteUser, UserAdapter.MyViewHolder>(DIFF_CALLBACK) {
     private lateinit var onItemClickCallback: OnItemClickCallback
 
     class MyViewHolder(val binding: ItemUserBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(users: Users) {
-            Glide.with(itemView.context).load(users.avatarUrl).into(binding.imgAvatar)
-            binding.txtUsername.text = users.login
+        fun bind(favUser: FavoriteUser) {
+            Glide.with(itemView.context).load(favUser.avatarUrl).into(binding.imgAvatar)
+            binding.txtUsername.text = favUser.username
         }
     }
 
@@ -28,6 +31,26 @@ class UserAdapter : ListAdapter<Users, UserAdapter.MyViewHolder>(DIFF_CALLBACK) 
         val users = getItem(position)
         holder.itemView.setOnClickListener { onItemClickCallback.onItemClicked(users) }
         holder.bind(users)
+        val ivBookmark = holder.binding.imgFav
+
+        if (users.isBookmarked) {
+            ivBookmark.setImageDrawable(
+                ContextCompat.getDrawable(
+                    ivBookmark.context,
+                    R.drawable.baseline_favorite_24
+                )
+            )
+        } else {
+            ivBookmark.setImageDrawable(
+                ContextCompat.getDrawable(
+                    ivBookmark.context,
+                    R.drawable.baseline_favorite_border_24
+                )
+            )
+        }
+        ivBookmark.setOnClickListener {
+            onFavUserClick(users)
+        }
     }
 
 
@@ -36,19 +59,26 @@ class UserAdapter : ListAdapter<Users, UserAdapter.MyViewHolder>(DIFF_CALLBACK) 
     }
 
     interface OnItemClickCallback {
-        fun onItemClicked(user: Users)
+        fun onItemClicked(user: FavoriteUser)
     }
 
     companion object {
-        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Users>() {
-            override fun areItemsTheSame(oldItem: Users, newItem: Users): Boolean {
-                return oldItem == newItem
-            }
+        val DIFF_CALLBACK: DiffUtil.ItemCallback<FavoriteUser> =
+            object : DiffUtil.ItemCallback<FavoriteUser>() {
+                override fun areItemsTheSame(
+                    oldItem: FavoriteUser,
+                    newItem: FavoriteUser
+                ): Boolean {
+                    return oldItem.username == newItem.username
+                }
 
-            override fun areContentsTheSame(oldItem: Users, newItem: Users): Boolean {
-                return oldItem == newItem
+                @SuppressLint("DiffUtilEquals")
+                override fun areContentsTheSame(
+                    oldItem: FavoriteUser,
+                    newItem: FavoriteUser
+                ): Boolean {
+                    return oldItem == newItem
+                }
             }
-        }
     }
-
 }
