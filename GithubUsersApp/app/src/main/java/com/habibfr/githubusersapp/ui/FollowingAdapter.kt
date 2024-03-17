@@ -35,15 +35,13 @@ class FollowingAdapter :
         val DIFF_CALLBACK = object : DiffUtil.ItemCallback<UserFollowingItem>() {
 
             override fun areItemsTheSame(
-                oldItem: UserFollowingItem,
-                newItem: UserFollowingItem
+                oldItem: UserFollowingItem, newItem: UserFollowingItem
             ): Boolean {
                 return oldItem == newItem
             }
 
             override fun areContentsTheSame(
-                oldItem: UserFollowingItem,
-                newItem: UserFollowingItem
+                oldItem: UserFollowingItem, newItem: UserFollowingItem
             ): Boolean {
                 return oldItem == newItem
             }

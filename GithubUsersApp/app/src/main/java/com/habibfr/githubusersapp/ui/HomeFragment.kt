@@ -2,12 +2,9 @@ package com.habibfr.githubusersapp.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CompoundButton
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -35,27 +32,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
-        val pref = SettingPreferences.getInstance(requireActivity().application.dataStore)
-        val settingViewModel =
-            ViewModelProvider(this, SettingViewModelFactory(pref))[SettingViewModel::class.java]
-
-//
-//        settingViewModel.getThemeSettings().observe(this){ isDark ->
-//            it.title = if (isDark) {
-//                getString(R.string.light_mode)
-//            } else {
-//                getString(R.string.dark_mode)
-//            }
-//        }
-
-
-//        sharedViewModel = ViewModelProvider(requireActivity())[SharedViewModel::class.java]
         val factory: ViewModelFactory = ViewModelFactory.getInstance(requireActivity())
-//        val homeViewModel: HomeViewModel by viewModels {
-//            factory
-//        }
 
         homeViewModel = ViewModelProvider(
             requireActivity(),
@@ -68,9 +45,6 @@ class HomeFragment : Fragment() {
 
         val itemDecoration = DividerItemDecoration(activity, layoutManager.orientation)
         binding.rvUser.addItemDecoration(itemDecoration)
-
-
-//        val settingsMenuItem = menu.findItem(R.id.menu_setting)
 
         binding.searchBar.setOnMenuItemClickListener {
             when (it.itemId) {
@@ -88,7 +62,8 @@ class HomeFragment : Fragment() {
                         commit()
                     }
                 }
-                R.id.menu_setting ->{
+
+                R.id.menu_setting -> {
                     val settingFragment = SettingFragment()
                     val fragmentManager = parentFragmentManager
 
@@ -102,7 +77,6 @@ class HomeFragment : Fragment() {
                         commit()
                     }
                 }
-//            android.R.id.s -> showAlertDialog(ALERT_DIALOG_CLOSE)
             }
 
             true
@@ -145,53 +119,11 @@ class HomeFragment : Fragment() {
                     }
                 }
             }
-//            setUser(users)
         }
 
         homeViewModel.isLoading.observe(viewLifecycleOwner) {
             showLoading(it)
         }
-
-
-//        val favUserAdapter = FavoriteUserAdapter { user ->
-//            if (user.isBookmarked) {
-//                homeViewModel.deleteFavoriteUser(user)
-//            } else {
-//                homeViewModel.saveFavoriteUser(user)
-//            }
-//        }
-
-//        homeViewModel.getUsers().observe(viewLifecycleOwner){result ->
-//            if (result != null) {
-//                when (result) {
-//                    is Result.Loading -> {
-//                        binding.progressBar.visibility = View.VISIBLE
-//                    }
-//
-//                    is Result.Success -> {
-//                        binding.progressBar.visibility = View.GONE
-//                        val newsData = result.data
-//                        Log.d("RESULT", result.toString())
-//
-//                        favUserAdapter.submitList(newsData)
-//
-//                    }
-//
-//                    is Result.Error -> {
-//                        binding.progressBar.visibility = View.GONE
-//                        Toast.makeText(
-//                            context, "Terjadi kesalahan" + result.error, Toast.LENGTH_SHORT
-//                        ).show()
-//                    }
-//                }
-//            }
-//        }
-//
-//        binding.rvUser.apply {
-//            layoutManager = LinearLayoutManager(context)
-//            setHasFixedSize(true)
-//            adapter = favUserAdapter
-//        }
 
     }
 
@@ -238,29 +170,6 @@ class HomeFragment : Fragment() {
             binding.progressBar.visibility = View.GONE
         }
     }
-
-//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-//        inflater.inflate(R.menu.option_menu, menu)
-//        super.onCreateOptionsMenu(menu, inflater)
-//    }
-//
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        when (item.itemId) {
-//            R.id.menu_favorit -> Toast.makeText(activity, "Fav", Toast.LENGTH_SHORT).show()
-////            android.R.id.home -> showAlertDialog(ALERT_DIALOG_CLOSE)
-//        }
-//        return super.onOptionsItemSelected(item)
-//    }
-
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        return when (item.itemId) {
-//            R.id.menu_favorit -> {
-//                Toast.makeText(activity, "Fav", Toast.LENGTH_SHORT).show()
-//                true
-//            }
-//            else -> super.onOptionsItemSelected(item)
-//        }
-//    }
 
 
     override fun onDestroy() {

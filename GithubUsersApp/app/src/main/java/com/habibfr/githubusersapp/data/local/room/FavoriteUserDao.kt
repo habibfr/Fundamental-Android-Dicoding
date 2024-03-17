@@ -25,9 +25,6 @@ interface FavoriteUserDao {
     @Update
     fun updateFavoriteUser(favUser: FavoriteUser)
 
-//    @Query("DELETE FROM fav_user WHERE username = :username")
-//    fun deleteAll(username: String)
-
     @Query("DELETE FROM fav_user WHERE bookmarked = 0")
     fun deleteAll()
 

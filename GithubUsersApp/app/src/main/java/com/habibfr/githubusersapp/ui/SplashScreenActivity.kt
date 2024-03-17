@@ -1,9 +1,9 @@
 package com.habibfr.githubusersapp.ui
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import androidx.appcompat.app.AppCompatActivity
 import com.habibfr.githubusersapp.R
 
 class SplashScreenActivity : AppCompatActivity() {

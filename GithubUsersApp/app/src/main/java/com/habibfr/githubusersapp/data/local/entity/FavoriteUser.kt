@@ -12,4 +12,4 @@ data class FavoriteUser(
 
     @field:ColumnInfo(name = "bookmarked")
     var isBookmarked: Boolean
-    )
+)

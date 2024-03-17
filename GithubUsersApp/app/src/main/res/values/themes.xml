@@ -15,12 +15,12 @@
         <item name="android:colorBackground">@color/colorBackground</item>
     </style>
 
-    <style name="CustomTabLayout" parent="Widget.MaterialComponents.TabLayout">
-        <item name="tabBackground">@drawable/tab_background</item>
-        <item name="tabTextColor">@color/colorBackground</item>
-        <item name="tabSelectedTextColor">#FFFFFF</item>
-        <item name="tabTextAppearance">@style/TabTextAppearance</item>
-    </style>
+<!--    <style name="CustomTabLayout" parent="Widget.MaterialComponents.TabLayout">-->
+<!--        <item name="tabBackground">@drawable/tab_background</item>-->
+<!--        <item name="tabTextColor">@color/colorBackground</item>-->
+<!--        <item name="tabSelectedTextColor">#FFFFFF</item>-->
+<!--        <item name="tabTextAppearance">@style/TabTextAppearance</item>-->
+<!--    </style>-->
 
     <style name="TabTextAppearance" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">14sp</item>

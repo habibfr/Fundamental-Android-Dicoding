@@ -1,16 +1,11 @@
 package com.habibfr.githubusersapp.data
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import com.habibfr.githubusersapp.BuildConfig
 import com.habibfr.githubusersapp.data.local.entity.FavoriteUser
 import com.habibfr.githubusersapp.data.local.room.FavoriteUserDao
 import com.habibfr.githubusersapp.data.response.GithubResponse
-import com.habibfr.githubusersapp.data.response.Users
 import com.habibfr.githubusersapp.data.retrofit.ApiService
-import com.habibfr.githubusersapp.ui.HomeViewModel
 import com.habibfr.githubusersapp.utils.AppExecutors
 import retrofit2.Call
 import retrofit2.Callback
@@ -61,27 +56,6 @@ class FavoriteUserRepository private constructor(
         }
         return result
     }
-
-//    fun searchUsers(username: String): LiveData<Result<List<Users>>> {
-//        val result = MutableLiveData<Result<List<Users>>>()
-//        result.value = Result.Loading
-//        val client = apiService.getUsers(username)
-//        client.enqueue(object : Callback<GithubResponse> {
-//            override fun onResponse(call: Call<GithubResponse>, response: Response<GithubResponse>) {
-//                if (response.isSuccessful) {
-//                    val users = response.body()?.items
-//                    result.value = Result.Success(users ?: emptyList())
-//                } else {
-//                    result.value = Result.Error("Error: ${response.message()}")
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<GithubResponse>, t: Throwable) {
-//                result.value = Result.Error(t.message.toString())
-//            }
-//        })
-//        return result
-//    }
 
     fun getBookmarkedFavoriteUser(): LiveData<List<FavoriteUser>> {
         return favUserDao.getBookmarkedFavoriteUser()

@@ -12,7 +12,8 @@ import com.habibfr.githubusersapp.R
 import com.habibfr.githubusersapp.data.local.entity.FavoriteUser
 import com.habibfr.githubusersapp.databinding.ItemUserBinding
 
-class UserAdapter(private val onFavUserClick: (FavoriteUser) -> Unit) : ListAdapter<FavoriteUser, UserAdapter.MyViewHolder>(DIFF_CALLBACK) {
+class UserAdapter(private val onFavUserClick: (FavoriteUser) -> Unit) :
+    ListAdapter<FavoriteUser, UserAdapter.MyViewHolder>(DIFF_CALLBACK) {
     private lateinit var onItemClickCallback: OnItemClickCallback
 
     class MyViewHolder(val binding: ItemUserBinding) : RecyclerView.ViewHolder(binding.root) {

@@ -27,7 +27,6 @@ class FavoriteUserFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
         _binding = FragmentFavoriteUserBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -59,32 +58,20 @@ class FavoriteUserFragment : Fragment() {
                     homeViewModel.searchUserFav(query).observe(viewLifecycleOwner) { userFav ->
                         if (userFav.isEmpty()) {
                             homeViewModel.getFavUsers()
-                                .observe(viewLifecycleOwner) { bookmarkedNews ->
-                                    setUser(bookmarkedNews)
+                                .observe(viewLifecycleOwner) { favUser ->
+                                    setUser(favUser)
                                 }
                         } else {
                             setSearchUser(userFav)
                         }
                     }
 
-
-//                    homeViewModel.searchUserFav(query)
                     false
                 }
         }
 
-//        val favUserAdapter = UserAdapter { user ->
-//            if (user.isBookmarked) {
-//                homeViewModel.deleteFavoriteUser(user)
-//            } else {
-//                homeViewModel.saveFavoriteUser(user)
-//            }
-//        }
-
-        homeViewModel.getFavUsers().observe(viewLifecycleOwner) { bookmarkedNews ->
-            setUser(bookmarkedNews)
-//            binding.progressBarFav.visibility = View.GONE
-//            favUserAdapter.submitList(bookmarkedNews)
+        homeViewModel.getFavUsers().observe(viewLifecycleOwner) { favUser ->
+            setUser(favUser)
         }
         homeViewModel.isLoading.observe(viewLifecycleOwner) {
             showLoading(it)
@@ -113,22 +100,6 @@ class FavoriteUserFragment : Fragment() {
 
         })
     }
-
-//    private fun showSelectedUser(user: FavoriteUser) {
-//        val bundle = Bundle()
-//        bundle.putString(DetailFragment.USERNAME, user.username)
-//
-//        val detailFragment = DetailFragment()
-//        detailFragment.arguments = bundle
-//        val fragmentManager = parentFragmentManager
-//
-//        fragmentManager.beginTransaction().apply {
-//            replace(R.id.frame_container, detailFragment, DetailFragment::class.java.simpleName)
-//            addToBackStack(null)
-//            commit()
-//        }
-//    }
-
 
     private fun setUser(items: List<FavoriteUser?>?) {
         val favUserAdapter = UserAdapter { user ->
